@@ -37,7 +37,6 @@ async function ConfiguredAssistant() {
       name={config.name}
       welcome={config.welcome}
       language={config.language}
-      retentionDays={config.retentionDays}
       maxDuration={config.maxDuration}
       unavailable={unavailable}
     />

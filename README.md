@@ -55,17 +55,17 @@ Optionally supply `ADMIN_NAME`. The script creates the user and credential accou
 
 ## Pages and everyday operation
 
-| Route                  | Purpose                                                                                 |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| `/`                    | Voice conversation, language choice, notice/consent, transcript and microphone controls |
-| `/admin/login`         | Administrator authentication or explicit demo entry                                     |
-| `/admin`               | Date-filtered overview, daily/weekly activity and spending, recent conversations        |
-| `/admin/sessions`      | Search, status/date filters, 10-row pagination, CSV export                              |
-| `/admin/sessions/[id]` | Transcript, usage events, settings/pricing snapshot and deletion                        |
-| `/admin/knowledge`     | Create, edit, delete, enable and categorize FAQs; preview approved context              |
-| `/admin/settings`      | Instructions, welcome message, model, voice, language, limits and timezone              |
-| `/admin/pricing`       | Create immutable model-pricing versions with source and effective date                  |
-| `/admin/budget`        | Thresholds, alerts, optional INR display and separate service expenses                  |
+| Route                  | Purpose                                                                          |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `/`                    | Voice conversation, language choice, transcript and microphone controls          |
+| `/admin/login`         | Administrator authentication or explicit demo entry                              |
+| `/admin`               | Date-filtered overview, daily/weekly activity and spending, recent conversations |
+| `/admin/sessions`      | Search, status/date filters, 10-row pagination, CSV export                       |
+| `/admin/sessions/[id]` | Transcript, usage events, settings/pricing snapshot and deletion                 |
+| `/admin/knowledge`     | Create, edit, delete, enable and categorize FAQs; preview approved context       |
+| `/admin/settings`      | Instructions, welcome message, model, voice, language, limits and timezone       |
+| `/admin/pricing`       | Create immutable model-pricing versions with source and effective date           |
+| `/admin/budget`        | Thresholds, alerts, optional INR display and separate service expenses           |
 
 Change instructions in **Agent settings**. New sessions snapshot the instructions, settings, language and knowledge; changing them does not affect an existing connection. Only non-sample, enabled FAQs enter context. Mark an entry non-sample only after verifying its organizational facts. Course eligibility, fees, and certification details must be confirmed by academy staff.
 
@@ -81,7 +81,7 @@ sequenceDiagram
     participant Next as Next.js API
     participant DB as MongoDB replica set
     participant Gemini as Gemini Live
-    Browser->>Next: Start + transcript consent + language
+    Browser->>Next: Start + language
     Next->>DB: Shared limits, settings, budget, admission transaction
     Next->>Gemini: Provision one-use, short-lived constrained token
     Next-->>Browser: Ephemeral token + session-scoped telemetry credential
@@ -147,7 +147,7 @@ An administrator can supply an INR-per-USD rate and effective date; INR values a
 
 ## Retention and deletion
 
-The notice must be acknowledged before a live or sample conversation starts. This app does not store raw audio. Google still processes audio under the terms applicable to your provider account; review your provider data settings before handling personal information.
+Conversations start directly from the microphone or send control. This app does not store raw audio. Google still processes audio under the terms applicable to your provider account; review your provider data settings before handling personal information.
 
 Configure transcript retention in Agent settings (1–365 days). Each session snapshots its expiry, so later changes apply to new sessions. Schedule an authenticated **POST** to `/api/cron/retention` every minute, with `Authorization: Bearer <CRON_SECRET>`. Configure the secret in the scheduler's secret store; never embed it in a public URL. GET is intentionally unsupported.
 
@@ -220,7 +220,7 @@ Checked during implementation on 2026-10-10; installed Next.js documentation in 
 
 ### General questions by voice or text
 
-MMA Assistant answers general questions and follow-ups, with spoken responses and a visible transcript. Accept the conversation notice, then start a voice conversation or type a question and press Enter. Starting with text does not request microphone permission; to switch to microphone input, end that conversation and start a voice conversation. You can also type during a voice conversation.
+MMA Assistant answers general questions and follow-ups, with spoken responses and a visible transcript. Start a voice conversation or type a question and press Enter. Starting with text does not request microphone permission; to switch to microphone input, end that conversation and start a voice conversation. You can also type during a voice conversation.
 
 Live answers require the configured Gemini key, MongoDB connection, and `DEMO_MODE=false`. Demo mode remains a clearly labeled scripted preview and does not generate answers to typed questions. The original shipped Academy-only prompt is upgraded when read; custom admin instructions are preserved. Approved Academy knowledge is used only for Academy-specific facts.
 

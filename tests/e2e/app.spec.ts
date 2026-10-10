@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-test("public demo requires notice consent and produces only a labelled sample", async ({
+test("public demo starts directly and produces only a labelled sample", async ({
   page,
 }) => {
   await page.goto("/");
@@ -9,8 +9,8 @@ test("public demo requires notice consent and produces only a labelled sample", 
     }),
   ).toBeVisible();
   const start = page.getByRole("button", { name: "Try a sample conversation" });
-  await expect(start).toBeDisabled();
-  await page.getByRole("checkbox").check();
+  await expect(start).toBeEnabled();
+  await expect(page.getByRole("checkbox")).toHaveCount(0);
   await start.click();
   await expect(
     page.getByRole("button", { name: "End conversation" }),
@@ -93,15 +93,14 @@ test("mobile public layout fits viewport", async ({ page }) => {
   });
 });
 
-test("typed questions require consent and demo explains live setup", async ({
+test("typed questions send directly and demo explains live setup", async ({
   page,
 }) => {
   await page.goto("/");
   await page.getByLabel("Your question").fill("Explain gravity");
   await expect(
     page.getByRole("button", { name: "Send question" }),
-  ).toBeDisabled();
-  await page.getByRole("checkbox").check();
+  ).toBeEnabled();
   await page.getByLabel("Your question").press("Enter");
   await expect(
     page.getByRole("alert").filter({ hasText: "Live answers are not enabled" }),

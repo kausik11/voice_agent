@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     const input = await body(
       req,
       z.object({
-        consent: z.literal(true),
         language: z.enum(["English", "Bengali", "Hindi"]),
       }),
     );

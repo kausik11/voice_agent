@@ -20,7 +20,6 @@ type Props = {
   welcome: string;
   language: string;
   maxDuration: number;
-  retentionDays: number;
   unavailable?: boolean;
 };
 export default function VoiceAssistant(props: Props) {
@@ -35,7 +34,6 @@ export default function VoiceAssistant(props: Props) {
   const [error, setError] = useState("");
   const [transcript, setTranscript] = useState<Transcript[]>([]);
   const [elapsed, setElapsed] = useState(0);
-  const [consent, setConsent] = useState(false);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const questionInput = useRef<HTMLInputElement>(null);
   const client = useRef<VoiceClient | null>(null);
@@ -76,7 +74,7 @@ export default function VoiceAssistant(props: Props) {
     };
   }, []);
   async function start(microphone = true) {
-    if (running || starting.current || !consent || props.unavailable) return;
+    if (running || starting.current || props.unavailable) return;
     starting.current = true;
     setVoiceMode(microphone);
     try {
@@ -131,7 +129,6 @@ export default function VoiceAssistant(props: Props) {
     if (
       !text ||
       text.length > 4000 ||
-      !consent ||
       props.unavailable ||
       state === "connecting" ||
       submitting.current ||
@@ -394,10 +391,7 @@ export default function VoiceAssistant(props: Props) {
                 className="chat-icon chat-send"
                 aria-label="Send question"
                 disabled={
-                  !consent ||
-                  props.unavailable ||
-                  sending ||
-                  state === "connecting"
+                  props.unavailable || sending || state === "connecting"
                 }
               >
                 <ArrowUp size={24} />
@@ -409,7 +403,7 @@ export default function VoiceAssistant(props: Props) {
                   className="chat-icon chat-mic"
                   aria-label={voiceLabel}
                   title={voiceLabel}
-                  disabled={!consent || props.unavailable || sending}
+                  disabled={props.unavailable || sending}
                   onClick={() => void start()}
                 >
                   <Mic size={23} />
@@ -438,18 +432,6 @@ export default function VoiceAssistant(props: Props) {
               </span>
             )}
           </div>
-          <label className="chat-consent">
-            <input
-              type="checkbox"
-              checked={consent}
-              disabled={running}
-              onChange={(event) => setConsent(event.target.checked)}
-            />
-            <span>
-              I agree to transcripts being kept for up to {props.retentionDays}{" "}
-              days. This app does not store raw audio.
-            </span>
-          </label>
         </div>
       </main>
       <footer className="chat-footer">

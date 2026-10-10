@@ -2954,25 +2954,7 @@ dialog.modal {
   color: #747f9e;
   margin-left: 5px;
 }
-.chat-consent {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 9px;
-  max-width: 590px;
-  margin: 4px auto 0;
-  color: #949bad;
-  font-size: 11px;
-  line-height: 1.7;
-  cursor: pointer;
-}
-.chat-consent input {
-  margin-top: 3px;
-  accent-color: #6c86ee;
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-}
+
 .chat-footer {
   text-align: center;
   padding: 22px;
@@ -3187,10 +3169,7 @@ dialog.modal {
     font-size: 11px;
     max-width: 76px;
   }
-  .chat-consent {
-    font-size: 10px;
-    padding: 0 8px;
-  }
+
   .chat-status {
     font-size: 10px;
   }
