@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          String    @default("viewer")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+}
+
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  accountId             String
+  providerId            String
+  userId                String    @db.ObjectId
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+model RateLimit {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+
+model RateBucket {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  count     Int      @default(0)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model AgentSettings {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique @default("default")
+  config    Json
+  revision  Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model KnowledgeEntry {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  question  String
+  answer    String
+  category  String
+  enabled   Boolean  @default(false)
+  sample    Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@index([enabled, category])
+}
+
+model VoiceSession {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  startedAt           DateTime  @default(now())
+  endedAt             DateTime?
+  lastActivityAt      DateTime  @default(now())
+  expiresAt           DateTime
+  status              String    @default("CREATED")
+  duration            Int       @default(0)
+  model               String
+  language            String
+  settingsSnapshot    Json
+  usageTotals         Json
+  estimatedCost       String?
+  costStatus          String    @default("INCOMPLETE")
+  pricingVersionId    String?   @db.ObjectId
+  reason              String?
+  demo                Boolean   @default(false)
+  credentialHash      String
+  transcriptPurged    Boolean   @default(false)
+  transcriptExpiresAt DateTime
+  revision            Int       @default(0)
+
+  @@index([demo, startedAt])
+  @@index([demo, status, startedAt])
+  @@index([status, expiresAt])
+  @@index([lastActivityAt])
+  @@index([transcriptPurged, transcriptExpiresAt])
+  @@index([pricingVersionId])
+}
+
+model TranscriptMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId String   @db.ObjectId
+  eventId   String
+  speaker   String
+  text      String
+  timestamp DateTime @default(now())
+  sequence  Int
+  final     Boolean  @default(false)
+
+  @@unique([sessionId, eventId])
+  @@index([sessionId, sequence])
+}
+
+model UsageEvent {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId   String   @db.ObjectId
+  eventId     String
+  timestamp   DateTime @default(now())
+  raw         Json
+  normalized  Json
+  counterMode String
+  period      String
+  source      String   @default("BROWSER")
+  trust       String   @default("PROVISIONAL")
+
+  @@unique([sessionId, eventId])
+  @@index([sessionId, timestamp])
+}
+
+model PricingVersion {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  model       String
+  currency    String   @default("USD")
+  effectiveAt DateTime
+  rates       Json
+  sourceUrl   String
+  createdAt   DateTime @default(now())
+
+  @@index([model, effectiveAt])
+}
+
+model BudgetSettings {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  key                 String    @unique @default("default")
+  daily               String?
+  monthly             String?
+  blockNew            Boolean   @default(false)
+  inrRate             String?
+  exchangeEffectiveAt DateTime?
+  hostingMonthly      String?
+  telephoneMonthly    String?
+}
+
+model BudgetAlert {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  period    String
+  amount    String
+  threshold String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

@@ -1,0 +1,20 @@
+{
+  "sessionId": "000000000000000000000000",
+  "eventId": "00000000-0000-4000-8000-000000000000",
+  "pricingVersionId": "000000000000000000000000",
+  "evidenceUrl": "https://example.invalid/replace-with-reviewed-billing-evidence",
+  "reviewedBy": "REPLACE_WITH_REVIEWER",
+  "normalized": {
+    "input.TEXT": 0,
+    "input.AUDIO": 0,
+    "output.TEXT": 0,
+    "output.AUDIO": 0,
+    "cache.TEXT": 0,
+    "cache.AUDIO": 0,
+    "thoughts": 0,
+    "tool": 0
+  },
+  "raw": {
+    "notice": "FORMAT EXAMPLE ONLY. Replace all values with verified complete-session billable data. These zeros are placeholders, not an assertion of zero usage."
+  }
+}
