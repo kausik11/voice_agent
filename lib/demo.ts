@@ -4,25 +4,25 @@ export const sampleKnowledge = [
     id: "sample-1",
     question: "How can I arrange a visit?",
     answer:
-      "Sample guidance: A staff member needs to confirm appointment availability and the booking procedure. This sample does not provide verified contact details.",
-    category: "Appointments",
+      "Sample guidance: A staff member needs to confirm campus visit availability and the booking procedure. This sample does not provide verified contact details.",
+    category: "Campus visits",
     enabled: false,
     sample: true,
   },
   {
     id: "sample-2",
-    question: "Where are your centres?",
+    question: "Where is the academy campus?",
     answer:
-      "Sample guidance: Centre addresses and opening hours have not been approved yet. Please ask a staff member to confirm before travelling.",
-    category: "Our centres",
+      "Sample guidance: Campus addresses and visiting hours have not been approved yet. Please ask a staff member to confirm before travelling.",
+    category: "Campus",
     enabled: false,
     sample: true,
   },
   {
     id: "sample-3",
-    question: "Can you recommend a treatment?",
+    question: "Which maritime course should I choose?",
     answer:
-      "Sample guidance: Patient-specific treatment decisions must be discussed with qualified clinical staff. This assistant cannot diagnose or recommend a treatment.",
+      "Sample guidance: Course availability, eligibility, fees, and certification details must be confirmed by the academy admissions team. This sample does not provide verified course information.",
     category: "General information",
     enabled: false,
     sample: true,
@@ -64,7 +64,7 @@ export function demoDetail(id: string) {
       {
         id: "2",
         speaker: "assistant",
-        text: "Hello! A staff member will need to confirm appointment availability and the booking procedure. I don’t have approved contact information yet.",
+        text: "Hello! A staff member will need to confirm campus visit availability and the booking procedure. I don’t have approved contact information yet.",
         timestamp: session.startedAt,
         sequence: 1,
         final: true,

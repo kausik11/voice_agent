@@ -34,7 +34,7 @@ describe("server authorization", () => {
   it("does not allow a demo cookie to bypass live authorization", async () => {
     getSession.mockResolvedValue(null);
     await expect(
-      adminAccess(new Headers({ cookie: "medha-demo=1" })),
+      adminAccess(new Headers({ cookie: "mma-demo=1" })),
     ).rejects.toMatchObject({ status: 401 });
   });
   it("requires explicit demo entry even for sample admin data", async () => {
@@ -43,7 +43,7 @@ describe("server authorization", () => {
       status: 401,
     });
     await expect(
-      adminAccess(new Headers({ cookie: "medha-demo=1" })),
+      adminAccess(new Headers({ cookie: "mma-demo=1" })),
     ).resolves.toBe("demo");
   });
 });

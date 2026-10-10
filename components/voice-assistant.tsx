@@ -2,26 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
+  Anchor,
+  ArrowUp,
   ArrowUpRight,
-  ArrowRight,
   Mic,
   MicOff,
   Square,
-  MessageSquareText,
-  ShieldCheck,
-  Globe2,
-  HeartHandshake,
+  Plus,
   Sparkles,
-  Headphones,
-  ChevronRight,
-  RotateCcw,
-  CircleHelp,
+  X,
   AudioLines,
-  Check,
-  Send,
 } from "lucide-react";
-import { Brand } from "./brand";
-import { Button } from "./ui/button";
 import { VoiceClient, type Transcript } from "@/lib/voice-client";
 type Props = {
   demo: boolean;
@@ -45,7 +36,8 @@ export default function VoiceAssistant(props: Props) {
   const [transcript, setTranscript] = useState<Transcript[]>([]);
   const [elapsed, setElapsed] = useState(0);
   const [consent, setConsent] = useState(false);
-  const [topic, setTopic] = useState<string | null>(null);
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const questionInput = useRef<HTMLInputElement>(null);
   const client = useRef<VoiceClient | null>(null);
   const demoTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const started = useRef(0);
@@ -100,7 +92,7 @@ export default function VoiceAssistant(props: Props) {
           [
             3000,
             "assistant",
-            "Hello, I’m Medha. A staff member will need to confirm appointment availability and the booking procedure. I don’t have approved contact information yet.",
+            "Hello, I’m the Mercantile Marine Academy assistant. Our admissions team can confirm campus visit availability. I don’t have verified visiting hours or contact details yet.",
           ],
           [6500, "user", "Can we speak in Bengali or Hindi?"],
           [
@@ -186,372 +178,282 @@ export default function VoiceAssistant(props: Props) {
                 : state === "thinking"
                   ? "Thinking…"
                   : `${props.name} is speaking…`;
-  const topics = [
-    {
-      icon: Sparkles,
-      title: "Learn something new",
-      description: "Science, technology, and everyday questions",
-      text: "Try asking: Why is the sky blue? You can also ask for writing help, explanations, or ideas on any topic.",
-    },
-    {
-      icon: HeartHandshake,
-      title: "Services & support",
-      description: "Find the right information",
-      text: "Ask about the support you are looking for. For Foundation services, Medha uses approved information and refers missing details to a staff member.",
-    },
-    {
-      icon: Globe2,
-      title: "Our centres",
-      description: "Plan your next visit",
-      text: "Ask about centre locations and visiting hours. Addresses and timings must be confirmed by staff until approved information is added.",
-    },
-    {
-      icon: Headphones,
-      title: "Appointments",
-      description: "Understand the next steps",
-      text: "Ask how to arrange an appointment. A staff member needs to confirm the booking procedure and availability.",
-    },
-  ];
+  const voiceLabel =
+    state === "ended"
+      ? "Start a new conversation"
+      : props.demo
+        ? "Try a sample conversation"
+        : "Start conversation";
+  const showWave =
+    running && voiceMode && !muted && !draft && state !== "connecting";
   return (
-    <div className="public-app">
-      <header className="public-header">
-        <Brand />
-        <nav>
-          <a href="#how-it-works">How it works</a>
-          <Link href="/admin">
-            Admin dashboard <ArrowUpRight size={15} />
-          </Link>
-        </nav>
+    <div className="mma-chat">
+      <header className="chat-topbar">
+        <Link href="/" className="chat-wordmark">
+          <Anchor size={21} />
+          <span>Mercantile Marine Academy</span>
+        </Link>
+        <Link href="/admin" className="chat-admin">
+          Admin dashboard <ArrowUpRight size={15} />
+        </Link>
       </header>
-      <main className="public-main">
-        <div className="public-intro">
-          <span className="eyebrow">
-            <span className="red-dot" /> HERE TO LISTEN. HERE TO HELP.
-          </span>
-          <h1>{props.welcome}</h1>
-          <p>
-            Meet {props.name}, your AI companion for questions on any topic.
-            <br className="desktop-break" /> Speak naturally or type a question.
-            Get a spoken answer and follow along in the conversation.
-          </p>
-        </div>
-        {props.demo && (
-          <div className="demo-note">
-            <Sparkles size={15} />
-            <span>
-              <strong>You’re exploring a demo.</strong> Try a sample
-              conversation. No audio is recorded or sent.
-            </span>
-            <Link href="/admin/login">
-              Explore dashboard <ArrowRight size={14} />
-            </Link>
+      <main className={`chat-stage ${transcript.length ? "has-messages" : ""}`}>
+        {!transcript.length && (
+          <div className="chat-greeting">
+            <h1>Where should we start?</h1>
+            <p>Ask anything. Type a thought, or say it out loud.</p>
           </div>
         )}
-        {props.unavailable && (
-          <div className="notice error" role="alert">
-            Conversations are temporarily unavailable. Please try again later.
-          </div>
-        )}
-        <div className="conversation-layout">
-          <section className="voice-card">
-            <div className="card-topline">
-              <span className="mini-label">
-                <AudioLines size={16} /> YOUR VOICE ASSISTANT
+        {transcript.length > 0 && (
+          <section className="chat-history" aria-label="Conversation">
+            <div className="chat-history-heading">
+              <span>
+                {props.demo ? "Sample conversation" : "Your conversation"}
               </span>
-              <span className={`status-pill ${running ? "online" : ""}`}>
-                <i />
-                {running ? "In conversation" : "Available"}
-              </span>
-            </div>
-            <div
-              className={`orb-scene ${running ? "orb-active" : ""}`}
-              aria-hidden="true"
-            >
-              <div className="orbit orbit-one" />
-              <div className="orbit orbit-two" />
-              <div className="orb">
-                <div className="orb-shine" />
-                <div className="waveform">
-                  {[19, 35, 49, 30, 61, 43, 26, 45, 22].map((h, i) => (
-                    <span
-                      key={i}
-                      style={{ height: h, animationDelay: `${i * 0.13}s` }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <span className="orb-spark spark-one">✦</span>
-              <span className="orb-spark spark-two">✧</span>
-            </div>
-            <div className="voice-title">
-              <h2>
-                Hi, I’m {props.name}
-                <span>✳</span>
-              </h2>
-              <p aria-live="polite">{displayState}</p>
-            </div>
-            <div className="language-select">
-              <Globe2 size={15} />
-              <label className="sr-only" htmlFor="language">
-                Conversation language
-              </label>
-              <select
-                id="language"
-                value={language}
-                disabled={running}
-                onChange={(e) => setLanguage(e.target.value)}
-              >
-                <option value="English">English</option>
-                <option value="Bengali">বাংলা · Bengali</option>
-                <option value="Hindi">हिन्दी · Hindi</option>
-              </select>
-            </div>
-            <div className="voice-actions">
-              {!running ? (
-                <Button
-                  onClick={() => void start()}
-                  disabled={!consent || props.unavailable || sending}
-                  className="start-button"
+              {!running && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTranscript([]);
+                    setState("idle");
+                    setDraft("");
+                    questionInput.current?.focus();
+                  }}
                 >
-                  <Mic size={19} />
-                  {state === "ended"
-                    ? "Start a new conversation"
-                    : props.demo
-                      ? "Try a sample conversation"
-                      : "Start conversation"}
-                  <ArrowRight size={17} />
-                </Button>
-              ) : (
-                <>
-                  <Button onClick={end}>
-                    <Square size={16} fill="currentColor" />
-                    End conversation
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    disabled={
-                      props.demo || !voiceMode || state === "connecting"
-                    }
-                    onClick={() => {
-                      client.current?.mute(!muted);
-                      setMuted(!muted);
-                    }}
-                    aria-label={muted ? "Unmute microphone" : "Mute microphone"}
-                    aria-pressed={muted}
-                  >
-                    {muted ? <MicOff size={19} /> : <Mic size={19} />}
-                  </Button>
-                </>
+                  New conversation <Plus size={15} />
+                </button>
               )}
             </div>
-            <p className="voice-hint">
-              {running
-                ? `${String(Math.floor(elapsed / 60)).padStart(2, "0")}:${String(elapsed % 60).padStart(2, "0")} · ${props.demo ? "Scripted preview · no audio" : `Up to ${Math.floor(props.maxDuration / 60)} minutes`}`
-                : "Speak or type. Typed questions don’t need microphone access."}
-            </p>
-            <div className="consent-area">
-              <ShieldCheck size={17} />
-              <label>
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  disabled={running}
-                  onChange={(e) => setConsent(e.target.checked)}
-                />
-                <span>
-                  I understand that live conversations are transcribed and kept
-                  for up to {props.retentionDays} days. Raw audio is not stored
-                  by this app.
-                </span>
-              </label>
-            </div>
-            {error && (
-              <div className="notice error" role="alert">
-                {error}
-                <button onClick={() => setError("")} aria-label="Dismiss error">
-                  ×
-                </button>
-              </div>
-            )}
-          </section>
-          <section className="transcript-card">
-            <div className="transcript-header">
-              <div>
-                <MessageSquareText size={19} />
-                <h2>Conversation</h2>
-              </div>
-              <span className="mini-label">
-                {props.demo ? "SAMPLE TRANSCRIPT" : "LIVE TRANSCRIPT"}
-              </span>
-            </div>
             <div
-              className="transcript-body"
               role="log"
               aria-label="Conversation transcript"
               aria-live="polite"
             >
-              {transcript.length === 0 ? (
-                <div className="transcript-empty">
-                  <span className="empty-icon">
-                    <MessageSquareText size={27} />
-                    <span className="small-spark">✦</span>
+              {transcript.map((message) => (
+                <article
+                  className={`chat-message ${message.speaker}`}
+                  key={message.eventId}
+                >
+                  <span className="chat-speaker">
+                    {message.speaker === "assistant" ? (
+                      <>
+                        <Sparkles size={16} />
+                        {props.name}
+                      </>
+                    ) : (
+                      "You"
+                    )}
                   </span>
-                  <h3>A conversation starts with hello.</h3>
-                  <p>
-                    Your words and {props.name}’s responses will
-                    <br />
-                    appear here as you speak or type.
-                  </p>
-                  <span className="empty-line" />
-                  <span className="empty-line short" />
-                </div>
-              ) : (
-                <div className="messages">
-                  {transcript.map((m) => (
-                    <div key={m.eventId} className={`message ${m.speaker}`}>
-                      <div className="message-avatar">
-                        {m.speaker === "assistant" ? (
-                          <AudioLines size={17} />
-                        ) : (
-                          "Y"
-                        )}
-                      </div>
-                      <div>
-                        <span className="message-name">
-                          {m.speaker === "assistant" ? props.name : "You"}
-                          <small>{m.final ? "" : " · speaking"}</small>
-                        </span>
-                        <p>{m.text}</p>
-                      </div>
-                    </div>
+                  <p>{message.text}</p>
+                </article>
+              ))}
+              <div ref={transcriptEnd} />
+            </div>
+          </section>
+        )}
+        <div className="chat-input-area">
+          {props.unavailable && (
+            <div className="chat-alert" role="alert">
+              Conversations are temporarily unavailable. Please try again later.
+            </div>
+          )}
+          {error && (
+            <div className="chat-alert" role="alert">
+              <span>{error}</span>
+              <button
+                type="button"
+                onClick={() => setError("")}
+                aria-label="Dismiss error"
+              >
+                <X size={17} />
+              </button>
+            </div>
+          )}
+          <form
+            className="chat-composer"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void sendQuestion();
+            }}
+          >
+            <div className="chat-options">
+              <button
+                type="button"
+                className="chat-icon"
+                aria-label="Conversation options"
+                aria-expanded={optionsOpen}
+                aria-controls="chat-options-panel"
+                onClick={() => setOptionsOpen(!optionsOpen)}
+              >
+                <Plus size={25} />
+              </button>
+              {optionsOpen && (
+                <div id="chat-options-panel" className="chat-options-panel">
+                  <span>Try a question</span>
+                  {[
+                    "Why is the sky blue?",
+                    "Help me write a friendly email",
+                    "Explain artificial intelligence simply",
+                  ].map((question) => (
+                    <button
+                      type="button"
+                      key={question}
+                      onClick={() => {
+                        setDraft(question);
+                        setOptionsOpen(false);
+                        questionInput.current?.focus();
+                      }}
+                    >
+                      {question}
+                    </button>
                   ))}
-                  <div ref={transcriptEnd} />
+                  <p>
+                    Type a question or use the microphone. Answers are spoken
+                    aloud and appear in your conversation.
+                  </p>
                 </div>
               )}
             </div>
-            <form
-              className="question-composer"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void sendQuestion();
-              }}
-            >
+            <div className={`chat-entry ${showWave ? "with-wave" : ""}`}>
               <label className="sr-only" htmlFor="question">
                 Your question
               </label>
               <input
+                ref={questionInput}
                 id="question"
                 value={draft}
                 maxLength={4000}
+                autoComplete="off"
                 onChange={(event) => setDraft(event.target.value)}
-                placeholder="Ask about anything…"
+                placeholder="Ask the academy…"
                 disabled={
                   props.unavailable || sending || state === "connecting"
                 }
               />
-              <Button
+              {showWave && (
+                <div className="chat-wave" aria-hidden="true">
+                  {Array.from({ length: 48 }, (_, i) => (
+                    <i
+                      key={i}
+                      style={{
+                        height: `${4 + (Math.sin(i * 0.7) + 1) * 7}px`,
+                        animationDelay: `${i * -0.09}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+            {!running && (
+              <div className="chat-language">
+                <label className="sr-only" htmlFor="language">
+                  Conversation language
+                </label>
+                <select
+                  id="language"
+                  value={language}
+                  onChange={(event) => setLanguage(event.target.value)}
+                >
+                  <option value="English">English</option>
+                  <option value="Bengali">বাংলা</option>
+                  <option value="Hindi">हिन्दी</option>
+                </select>
+              </div>
+            )}
+            {running && (
+              <>
+                {voiceMode && (
+                  <button
+                    type="button"
+                    className="chat-icon"
+                    disabled={props.demo || state === "connecting"}
+                    aria-label={muted ? "Unmute microphone" : "Mute microphone"}
+                    aria-pressed={muted}
+                    onClick={() => {
+                      client.current?.mute(!muted);
+                      setMuted(!muted);
+                    }}
+                  >
+                    {muted ? <MicOff size={20} /> : <Mic size={20} />}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="chat-icon chat-stop"
+                  onClick={end}
+                  aria-label="End conversation"
+                  title="End conversation"
+                >
+                  <Square size={14} fill="currentColor" />
+                </button>
+              </>
+            )}
+            {draft.trim() ? (
+              <button
                 type="submit"
-                size="icon"
+                className="chat-icon chat-send"
                 aria-label="Send question"
                 disabled={
-                  !draft.trim() ||
                   !consent ||
                   props.unavailable ||
                   sending ||
                   state === "connecting"
                 }
               >
-                <Send size={18} />
-              </Button>
-              <p>
-                {!consent
-                  ? "Accept the conversation notice to speak or send a question."
-                  : props.demo
-                    ? "Demo preview · live answers are not enabled."
-                    : "Answers are spoken aloud and shown above. Enter to send."}
-              </p>
-            </form>
-            <div className="transcript-footer">
-              <span className="red-dot" />
+                <ArrowUp size={24} />
+              </button>
+            ) : (
+              !running && (
+                <button
+                  type="button"
+                  className="chat-icon chat-mic"
+                  aria-label={voiceLabel}
+                  title={voiceLabel}
+                  disabled={!consent || props.unavailable || sending}
+                  onClick={() => void start()}
+                >
+                  <Mic size={23} />
+                </button>
+              )
+            )}
+          </form>
+          <div className="chat-status" role="status">
+            {running ? (
+              <>
+                <AudioLines size={14} />
+                <span>{displayState}</span>
+                <span className="chat-timer">
+                  {String(Math.floor(elapsed / 60)).padStart(2, "0")}:
+                  {String(elapsed % 60).padStart(2, "0")} /{" "}
+                  {Math.floor(props.maxDuration / 60)} min
+                </span>
+              </>
+            ) : (
               <span>
                 {props.demo
-                  ? "Sample content · not a live Gemini conversation"
-                  : "A little clarity, one conversation at a time."}
+                  ? "Demo preview · sample conversation only"
+                  : state === "ended"
+                    ? "Conversation ended · start again whenever you’re ready"
+                    : "English, বাংলা, हिन्दी · powered by Gemini"}
               </span>
-              {state === "ended" && (
-                <button
-                  onClick={() => setTranscript([])}
-                  title="Clear local transcript"
-                >
-                  <RotateCcw size={14} />
-                </button>
-              )}
-            </div>
-          </section>
+            )}
+          </div>
+          <label className="chat-consent">
+            <input
+              type="checkbox"
+              checked={consent}
+              disabled={running}
+              onChange={(event) => setConsent(event.target.checked)}
+            />
+            <span>
+              I agree to transcripts being kept for up to {props.retentionDays}{" "}
+              days. This app does not store raw audio.
+            </span>
+          </label>
         </div>
-        <section className="topics">
-          <div className="section-heading">
-            <h2>A few things we can talk about</h2>
-            <span>Not sure where to start? Try one of these.</span>
-          </div>
-          <div className="topic-grid">
-            {topics.map((t) => (
-              <button
-                className={`topic-card ${topic === t.title ? "selected" : ""}`}
-                key={t.title}
-                onClick={() => {
-                  setTopic(topic === t.title ? null : t.title);
-                  if (t.title === "Learn something new")
-                    setDraft("Why is the sky blue?");
-                }}
-                aria-expanded={topic === t.title}
-              >
-                <span className="topic-icon">
-                  <t.icon size={22} />
-                </span>
-                <span>
-                  <strong>{t.title}</strong>
-                  <small>{t.description}</small>
-                </span>
-                <ChevronRight size={17} />
-              </button>
-            ))}
-          </div>
-          {topic && (
-            <div className="topic-answer">
-              <CircleHelp size={18} />
-              <p>{topics.find((t) => t.title === topic)?.text}</p>
-            </div>
-          )}
-        </section>
-        <section id="how-it-works" className="how-strip">
-          <div>
-            <span className="check-icon">
-              <Check size={15} />
-            </span>{" "}
-            Speak or type in English, বাংলা or हिन्दी
-          </div>
-          <div>
-            <span className="check-icon">
-              <Check size={15} />
-            </span>{" "}
-            Interrupt anytime, just like a real conversation
-          </div>
-          <div>
-            <ShieldCheck size={16} /> Your privacy comes first
-          </div>
-        </section>
       </main>
-      <footer className="public-footer">
-        <span>Made for meaningful conversations.</span>
-        <span>
-          Save Medha Foundation <span className="footer-separator">/</span>{" "}
-          Powered by Gemini
-        </span>
-        <span className="footer-heart">
-          With care, always. <HeartHandshake size={15} />
-        </span>
+      <footer className="chat-footer">
+        A little clarity, one conversation at a time.
       </footer>
     </div>
   );

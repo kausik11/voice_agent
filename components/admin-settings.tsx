@@ -73,7 +73,7 @@ const emptyBudget: BudgetConfig = {
 };
 const meta: Record<string, { title: string; description: string }> = {
   settings: {
-    title: "Make Medha your own.",
+    title: "Make MMA Assistant your own.",
     description: "Set the voice, guidance, and boundaries for your assistant.",
   },
   knowledge: {
@@ -416,9 +416,10 @@ export default function AdminSettings({
                     <ShieldCheck size={23} />
                     <h3>Thoughtful by design</h3>
                     <p>
-                      Use approved information for Foundation-specific facts.
-                      General questions can use the model’s knowledge. Clinical
-                      decisions should always be referred to qualified staff.
+                      Use approved information for Academy-specific facts.
+                      General questions can use the model’s knowledge. Course
+                      eligibility, fees, and certification details should be
+                      confirmed by academy staff.
                     </p>
                   </div>
                 </div>
@@ -447,7 +448,7 @@ export default function AdminSettings({
                   </p>
                   <pre>
                     {preview ||
-                      "No approved Foundation knowledge yet. General questions are supported; missing Foundation details need staff confirmation."}
+                      "No approved Academy knowledge yet. General questions are supported; missing Academy details need staff confirmation."}
                   </pre>
                 </section>
               )}

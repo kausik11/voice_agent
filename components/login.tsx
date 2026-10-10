@@ -110,7 +110,7 @@ export default function Login({ demo }: { demo: boolean }) {
         </div>
       </main>
       <footer>
-        Save Medha Foundation · Made for meaningful conversations.
+        Mercantile Marine Academy · Made for meaningful conversations.
       </footer>
     </div>
   );

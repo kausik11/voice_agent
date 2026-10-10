@@ -8,7 +8,7 @@ export async function POST(req: Request) {
       { ok: true },
       {
         headers: {
-          "Set-Cookie": `medha-demo=1; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800${new URL(req.url).protocol === "https:" ? "; Secure" : ""}`,
+          "Set-Cookie": `mma-demo=1; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800${new URL(req.url).protocol === "https:" ? "; Secure" : ""}`,
         },
       },
     );
@@ -24,7 +24,7 @@ export async function DELETE(req: Request) {
       {
         headers: {
           "Set-Cookie":
-            "medha-demo=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0",
+            "mma-demo=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0",
         },
       },
     );

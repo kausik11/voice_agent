@@ -49,9 +49,9 @@ export default function AdminShell({
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
         <Brand />
         <div className="workspace">
-          <span className="workspace-mark">SM</span>
+          <span className="workspace-mark">MMA</span>
           <span>
-            <strong>Save Medha Foundation</strong>
+            <strong>Mercantile Marine Academy</strong>
             <small>Administrator workspace</small>
           </span>
         </div>
@@ -134,8 +134,8 @@ export default function AdminShell({
         )}
         <main className="admin-main">{children}</main>
         <footer className="admin-footer">
-          Save Medha Foundation{" "}
-          <span>Private administrator workspace · Medha</span>
+          Mercantile Marine Academy{" "}
+          <span>Private administrator workspace · MMA Assistant</span>
         </footer>
       </div>
     </div>

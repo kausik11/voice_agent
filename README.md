@@ -1,6 +1,6 @@
-# Medha — AI voice assistant & administrator workspace
+# Mercantile Marine Academy — AI assistant & administrator workspace
 
-A Next.js App Router application for Save Medha Foundation, with a focused voice interface, Gemini Live browser streaming, MongoDB persistence through Prisma, and a protected usage dashboard. The included organizational content is clearly labelled sample guidance, **not verified Foundation information**.
+A Next.js App Router application for Mercantile Marine Academy, with a focused voice interface, Gemini Live browser streaming, MongoDB persistence through Prisma, and a protected usage dashboard. The included organizational content is clearly labelled sample guidance, **not verified Academy information**.
 
 ## Run the demo
 
@@ -67,7 +67,7 @@ Optionally supply `ADMIN_NAME`. The script creates the user and credential accou
 | `/admin/pricing`       | Create immutable model-pricing versions with source and effective date                  |
 | `/admin/budget`        | Thresholds, alerts, optional INR display and separate service expenses                  |
 
-Change instructions in **Agent settings**. New sessions snapshot the instructions, settings, language and knowledge; changing them does not affect an existing connection. Only non-sample, enabled FAQs enter context. Mark an entry non-sample only after verifying its organizational facts. Patient-specific clinical decisions are referred to staff.
+Change instructions in **Agent settings**. New sessions snapshot the instructions, settings, language and knowledge; changing them does not affect an existing connection. Only non-sample, enabled FAQs enter context. Mark an entry non-sample only after verifying its organizational facts. Course eligibility, fees, and certification details must be confirmed by academy staff.
 
 Knowledge retrieval is isolated in `lib/services.ts:approvedKnowledge`: at most 20 recent enabled/non-sample entries and 12,000 characters. The initial editor caps entries at 200; replace this abstraction with indexed retrieval for a larger corpus. No arbitrary document instructions or tools are executed.
 
@@ -202,7 +202,7 @@ Known limitations:
 
 - Live accounting periods are not assumed. Automatic live spending remains incomplete; verified operator reconciliation is implemented.
 - `@google/genai` 2.28.0 still emits an ephemeral-token `v1alpha` warning in its source, while the current official Live guide specifies `v1beta`. The implementation follows the current documented `v1beta` endpoint; the SDK constructs that endpoint without throwing. This exact combination needs a live token handshake before launch. Do not silently switch models or API versions to bypass a provider failure.
-- No automatic WebSocket resumption, durable offline telemetry queue, raw-audio recording, email/SMS alerts, telephone gateway or clinical decision tooling.
+- No automatic WebSocket resumption, durable offline telemetry queue, raw-audio recording, email/SMS alerts, telephone gateway or admissions processing.
 - An extracted ephemeral token can be used directly until its short expiry. Browser telemetry/heartbeats cannot prove provider disconnection. Duration expiry limits this exposure; a persistent authenticated audio proxy would be required for authoritative accounting and immediate server revocation.
 - Details/export/knowledge limits above are explicit initial-scale bounds. Read-only demo timestamps are generated relative to the current time, and sample spend is illustrative.
 - Dependency audit currently reports upstream `braces`/ESLint globbing and `deepmerge-ts`/Prisma configuration advisories. These are tracked in [docs/verification.md](docs/verification.md); do not force a Prisma major upgrade that loses MongoDB support or an old Next.js downgrade just to silence audit output.
@@ -218,9 +218,8 @@ Checked during implementation on 2026-10-10; installed Next.js documentation in 
 - [Prisma v7 upgrade guidance](https://www.prisma.io/docs/orm/v6/more/upgrades/to-v7): MongoDB projects should retain Prisma 6 on this upgrade path.
 - [Better Auth Prisma adapter](https://better-auth.com/docs/adapters/prisma), [email/password authentication](https://better-auth.com/docs/authentication/email-password), and [shared rate-limit storage](https://better-auth.com/docs/concepts/rate-limit).
 
-
 ### General questions by voice or text
 
-Medha answers general questions and follow-ups, with spoken responses and a visible transcript. Accept the conversation notice, then start a voice conversation or type a question and press Enter. Starting with text does not request microphone permission; to switch to microphone input, end that conversation and start a voice conversation. You can also type during a voice conversation.
+MMA Assistant answers general questions and follow-ups, with spoken responses and a visible transcript. Accept the conversation notice, then start a voice conversation or type a question and press Enter. Starting with text does not request microphone permission; to switch to microphone input, end that conversation and start a voice conversation. You can also type during a voice conversation.
 
-Live answers require the configured Gemini key, MongoDB connection, and `DEMO_MODE=false`. Demo mode remains a clearly labeled scripted preview and does not generate answers to typed questions. The original shipped Foundation-only prompt is upgraded when read; custom admin instructions are preserved. Approved Foundation knowledge is used only for Foundation-specific facts.
+Live answers require the configured Gemini key, MongoDB connection, and `DEMO_MODE=false`. Demo mode remains a clearly labeled scripted preview and does not generate answers to typed questions. The original shipped Academy-only prompt is upgraded when read; custom admin instructions are preserved. Approved Academy knowledge is used only for Academy-specific facts.

@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  legacyName,
+  legacyOrganization,
+  legacyInstructions,
+  legacyGeneralInstructions,
+} from "./legacy-branding";
 export const MODELS = ["gemini-3.8-live"] as const;
 export const VOICES = ["Kore", "Puck", "Aoede", "Charon", "Fenrir"] as const;
 export const settingsSchema = z.object({
@@ -22,13 +28,11 @@ export const settingsSchema = z.object({
   }, "Invalid timezone"),
 });
 export type AgentConfig = z.infer<typeof settingsSchema>;
-export const legacyInstructions =
-  "You are Save Medha Foundation’s information assistant. Answer questions about services, centre locations, visiting hours, and appointment procedures using approved information only. If information is missing, explain that a staff member needs to confirm it. Never invent organizational facts. Refer patient-specific clinical decisions to qualified staff. Do not request sensitive medical information. Be warm, concise, and helpful.";
 export const defaults: AgentConfig = {
-  name: "Medha",
+  name: "MMA Assistant",
   welcome: "A little guidance. A real conversation.",
   instructions:
-    "You are Medha, a helpful general-purpose AI assistant. Answer the user’s spoken or typed question on any topic, including learning, science, technology, writing, and everyday life. Use conversation context for follow-up questions. Be warm, clear, and concise, expanding when asked. Respond in the user’s preferred language. Be honest about uncertainty and never claim real-time access or actions you cannot perform. For questions specifically about Save Medha Foundation, use the approved organizational reference information; ask staff to confirm missing organizational details. This restriction applies only to organization-specific facts, not general questions.",
+    "You are MMA Assistant, the AI assistant for Mercantile Marine Academy. Help prospective students, students, and visitors with academy questions, maritime learning, and general questions. Answer the user’s spoken or typed question on any topic, including learning, science, technology, writing, and everyday life. Use conversation context for follow-up questions. Be warm, clear, and concise, expanding when asked. Respond in the user’s preferred language. Be honest about uncertainty and never claim real-time access or actions you cannot perform. For questions specifically about Mercantile Marine Academy, use the approved organizational reference information; ask staff to confirm missing organizational details. This restriction applies only to organization-specific facts, not general questions.",
   language: "English",
   model: MODELS[0],
   voice: "Kore",
@@ -85,10 +89,21 @@ export function isDemo() {
   );
 }
 
-// Upgrade only the original shipped prompt; preserve administrator customizations.
+// Upgrade the former brand while preserving unrelated administrator customizations.
 export function parseAgentConfig(value: unknown): AgentConfig {
   const config = settingsSchema.parse(value);
-  return config.instructions === legacyInstructions
-    ? { ...config, instructions: defaults.instructions }
-    : config;
+  const rename = (text: string) =>
+    text
+      .replaceAll(legacyOrganization, "Mercantile Marine Academy")
+      .replaceAll(legacyName, defaults.name);
+  return {
+    ...config,
+    name: rename(config.name),
+    welcome: rename(config.welcome),
+    instructions: [legacyInstructions, legacyGeneralInstructions].includes(
+      config.instructions,
+    )
+      ? defaults.instructions
+      : rename(config.instructions),
+  };
 }

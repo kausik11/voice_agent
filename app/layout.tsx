@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Medha — A conversation that cares",
+  title: "Mercantile Marine Academy — AI Assistant",
   description:
-    "Meet Medha, Save Medha Foundation’s voice information assistant. Speak naturally in English, Bengali, or Hindi.",
+    "Meet MMA Assistant, Mercantile Marine Academy’s voice information assistant. Speak naturally in English, Bengali, or Hindi.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Suppression is limited to this element, not descendant components. */}
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Suspense
-          fallback={<div className="loading-state">Loading Medha…</div>}
+          fallback={<div className="loading-state">Loading MMA Assistant…</div>}
         >
           {children}
         </Suspense>

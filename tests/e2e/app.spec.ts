@@ -5,7 +5,7 @@ test("public demo requires notice consent and produces only a labelled sample", 
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "A little guidance. A real conversation.",
+      name: "Where should we start?",
     }),
   ).toBeVisible();
   const start = page.getByRole("button", { name: "Try a sample conversation" });
@@ -66,7 +66,7 @@ test("admin API and pages require access; demo can navigate every screen", async
   await expect(page.getByRole("button", { name: "Save FAQ" })).toBeDisabled();
   await page.getByRole("button", { name: "Close editor" }).click();
   for (const [link, heading] of [
-    ["Agent settings", "Make Medha your own."],
+    ["Agent settings", "Make MMA Assistant your own."],
     ["Model pricing", "Know what goes into a cost."],
     ["Budget & alerts", "A little peace of mind."],
   ]) {
@@ -82,16 +82,11 @@ test("mobile public layout fits viewport", async ({ page }) => {
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(390);
-  await page
-    .getByRole("button", {
-      name: "Services & support Find the right information",
-    })
-    .click();
-  await expect(
-    page.getByText("Ask about the support you are looking for.", {
-      exact: false,
-    }),
-  ).toBeVisible();
+  await page.getByRole("button", { name: "Conversation options" }).click();
+  await page.getByRole("button", { name: "Why is the sky blue?" }).click();
+  await expect(page.getByLabel("Your question")).toHaveValue(
+    "Why is the sky blue?",
+  );
   await page.screenshot({
     path: "artifacts/public-mobile.png",
     fullPage: true,
@@ -112,7 +107,8 @@ test("typed questions require consent and demo explains live setup", async ({
     page.getByRole("alert").filter({ hasText: "Live answers are not enabled" }),
   ).toContainText("Live answers are not enabled");
   await expect(page.getByLabel("Your question")).toHaveValue("Explain gravity");
-  await page.getByRole("button", { name: /Learn something new/ }).click();
+  await page.getByRole("button", { name: "Conversation options" }).click();
+  await page.getByRole("button", { name: "Why is the sky blue?" }).click();
   await expect(page.getByLabel("Your question")).toHaveValue(
     "Why is the sky blue?",
   );

@@ -7,7 +7,7 @@ export async function adminAccess(headers: Headers) {
       !headers
         .get("cookie")
         ?.split(";")
-        .some((c) => c.trim() === "medha-demo=1")
+        .some((c) => c.trim() === "mma-demo=1")
     )
       throw new HttpError(
         401,

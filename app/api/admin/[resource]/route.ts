@@ -210,7 +210,7 @@ function csv(rows: Record<string, unknown>[]) {
     {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": 'attachment; filename="medha-sessions.csv"',
+        "Content-Disposition": 'attachment; filename="mma-sessions.csv"',
         "Cache-Control": "no-store",
       },
     },

@@ -9,7 +9,7 @@ export default function Home() {
     <Suspense
       fallback={
         <div className="loading-state" role="status">
-          Loading Medha…
+          Loading MMA Assistant…
         </div>
       }
     >

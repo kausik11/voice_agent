@@ -163,7 +163,9 @@ export default function SessionDetail({ id }: { id: string }) {
                         </span>
                         <div>
                           <span className="message-name">
-                            {m.speaker === "assistant" ? "Medha" : "Visitor"}
+                            {m.speaker === "assistant"
+                              ? "MMA Assistant"
+                              : "Visitor"}
                             <small>{m.final ? "" : " · partial"}</small>
                           </span>
                           <p>{m.text}</p>
