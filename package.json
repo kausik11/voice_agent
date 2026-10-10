@@ -15,7 +15,8 @@
     "admin:create": "tsx --env-file=.env scripts/create-admin.ts",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate",
-    "usage:reconcile": "tsx --env-file=.env scripts/reconcile-usage.ts"
+    "usage:reconcile": "tsx --env-file=.env scripts/reconcile-usage.ts",
+    "knowledge:import": "tsx --env-file=.env scripts/import-academy-faqs.ts"
   },
   "dependencies": {
     "@google/genai": "2.28.0",

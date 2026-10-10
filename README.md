@@ -223,3 +223,13 @@ Checked during implementation on 2026-10-10; installed Next.js documentation in 
 MMA Assistant answers general questions and follow-ups, with spoken responses and a visible transcript. Accept the conversation notice, then start a voice conversation or type a question and press Enter. Starting with text does not request microphone permission; to switch to microphone input, end that conversation and start a voice conversation. You can also type during a voice conversation.
 
 Live answers require the configured Gemini key, MongoDB connection, and `DEMO_MODE=false`. Demo mode remains a clearly labeled scripted preview and does not generate answers to typed questions. The original shipped Academy-only prompt is upgraded when read; custom admin instructions are preserved. Approved Academy knowledge is used only for Academy-specific facts.
+
+### Academy website FAQs
+
+The reviewed dataset in `data/academy-faqs.json` contains 16 concise FAQs sourced from the academy website. Each imported answer retains its source URL and review date. Import into the configured database with:
+
+```bash
+npm run knowledge:import
+```
+
+Entries are enabled and non-sample, making them available to new conversations. Repeating the import skips existing IDs or matching questions, preserving administrator edits. Manage entries under **Admin → Knowledge base**. This is a dated snapshot, not a live website sync. Fees, batch dates, seats, and unspecified visiting hours require confirmation. The assistant currently retrieves up to 20 enabled entries within 12,000 characters; the import reports how many website FAQs fit.

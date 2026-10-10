@@ -1,0 +1,102 @@
+{
+  "reviewedAt": "2026-10-10",
+  "note": "Paraphrased from academy-published pages; approval claims are attributed to the academy, not independently certified. No live availability or guaranteed outcomes are imported.",
+  "entries": [
+    {
+      "category": "About the academy",
+      "question": "What is Mercantile Marine Academy?",
+      "answer": "Mercantile Marine Academy is a Kolkata maritime training institute established in 1998. It provides post-sea training and IMU-CET preparation.",
+      "sourceUrl": "https://www.mmatrust.com/about"
+    },
+    {
+      "category": "About the academy",
+      "question": "Is MMA approved by DG Shipping?",
+      "answer": "The academy website lists DG Shipping approval for post-sea training under MTI number 303013, and ISO 9001:2015 certification. Confirm approval for your specific course with admissions.",
+      "sourceUrl": "https://www.mmatrust.com/about"
+    },
+    {
+      "category": "Campus",
+      "question": "Where is Mercantile Marine Academy located?",
+      "answer": "The campus is at 15/21, Pillar 126, New BBT Road, Maheshtala, behind MM Classic Marvel, RS 65, South 24 Parganas, Kolkata 700141, West Bengal.",
+      "sourceUrl": "https://www.mmatrust.com/contact"
+    },
+    {
+      "category": "Contact",
+      "question": "How can I contact the academy?",
+      "answer": "For general enquiries, the Contact page lists +91 92962 06661 and mmakolkata@gmail.com. You can also submit its enquiry form.",
+      "sourceUrl": "https://www.mmatrust.com/contact"
+    },
+    {
+      "category": "Campus",
+      "question": "How can I reach the campus by public transport?",
+      "answer": "The Contact page mentions Chakmir Bus Stop and the rail connection from Sealdah to Santoshpur. Check its map and confirm your route before travelling.",
+      "sourceUrl": "https://www.mmatrust.com/contact"
+    },
+    {
+      "category": "Admissions",
+      "question": "How do I apply for admission?",
+      "answer": "Submit an online enquiry or visit the campus. The counselling team helps select a course and batch; payment then confirms admission. Confirm availability and payment instructions directly with admissions.",
+      "sourceUrl": "https://www.mmatrust.com/programmes"
+    },
+    {
+      "category": "Admissions",
+      "question": "What documents are needed for admission?",
+      "answer": "Prepare photo identification, recent passport photos, and relevant education or seafaring records. CDC and existing STCW certificates may be needed. Admissions will confirm the course-specific checklist.",
+      "sourceUrl": "https://www.mmatrust.com/contact"
+    },
+    {
+      "category": "Courses",
+      "question": "What types of courses does MMA offer?",
+      "answer": "The course directory includes basic and advanced STCW/modular training, competency courses, simulator training, refresher/updating courses, SSO, and VICT trainer training. Check the course directory for the programme you need.",
+      "sourceUrl": "https://www.mmatrust.com/dg-approved-courses"
+    },
+    {
+      "category": "IMU-CET",
+      "question": "Does MMA offer IMU-CET coaching?",
+      "answer": "Yes. The academy describes structured preparation for the Indian Maritime University entrance exam, with marine faculty, mock tests, and progress tracking.",
+      "sourceUrl": "https://www.mmatrust.com/programmes"
+    },
+    {
+      "category": "IMU-CET",
+      "question": "Which subjects and activities are covered in IMU-CET preparation?",
+      "answer": "The programmes page lists physics, chemistry, mathematics, English, general knowledge, and interview preparation, alongside previous-year questions and timed mock exams. Its coaching overview also mentions aptitude.",
+      "sourceUrl": "https://www.mmatrust.com/programmes"
+    },
+    {
+      "category": "Maritime basics",
+      "question": "What does STCW mean?",
+      "answer": "STCW refers to the international convention on seafarer training, certification, and watchkeeping standards for merchant-ship personnel.",
+      "sourceUrl": "https://www.mmatrust.com/"
+    },
+    {
+      "category": "Maritime basics",
+      "question": "What is an INDOS number?",
+      "answer": "INDOS means Indian National Database for Seafarers. It is an identification number for Indian seafarers issued by the Directorate General of Shipping.",
+      "sourceUrl": "https://www.mmatrust.com/"
+    },
+    {
+      "category": "Admissions",
+      "question": "What if I cannot book a course online?",
+      "answer": "The academy website says you can contact admissions by phone or email, or visit the institute, for help with booking and alternative payment arrangements.",
+      "sourceUrl": "https://www.mmatrust.com/"
+    },
+    {
+      "category": "Admissions",
+      "question": "What are the current fees, batch dates, and available seats?",
+      "answer": "These FAQs do not include verified live fees, batch dates, or seat availability. Check the course booking page and ask admissions for current details before paying.",
+      "sourceUrl": "https://www.mmatrust.com/dg-approved-courses"
+    },
+    {
+      "category": "Maritime basics",
+      "question": "Is the academy MTI number the same as an INDOS number?",
+      "answer": "The website identifies 303013 as the academy’s DGS MTI number. Its INDOS FAQ directs readers to the administration office for institute-specific INDOS details; do not use the MTI number as an INDOS number.",
+      "sourceUrl": "https://www.mmatrust.com/"
+    },
+    {
+      "category": "Campus",
+      "question": "What are the campus visiting hours?",
+      "answer": "Exact visiting hours are not stated in the reviewed Contact page. Contact the academy before travelling to arrange your visit.",
+      "sourceUrl": "https://www.mmatrust.com/contact"
+    }
+  ]
+}
